@@ -1,9 +1,9 @@
-import React from 'react';
-import { buildURI, toCSV } from '../core';
+import React from "react";
+import { buildURI, toCSV } from "../core";
 import {
   defaultProps as commonDefaultProps,
   propTypes as commonPropTypes
-} from '../metaProps';
+} from "../metaProps";
 
 /**
  *
@@ -20,14 +20,32 @@ class CSVLink extends React.Component {
   }
 
   componentDidMount() {
-    const {data, headers, separator, uFEFF, enclosingCharacter} = this.props;
-    this.setState({ href: this.buildURI(data, uFEFF, headers, separator, enclosingCharacter) });
+    const {
+      data,
+      headers,
+      separator,
+      uFEFF,
+      enclosingCharacter,
+      leadingComments
+    } = this.props;
+    this.setState({
+      href: this.buildURI(
+        data,
+        uFEFF,
+        headers,
+        separator,
+        enclosingCharacter,
+        leadingComments
+      )
+    });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
-      const { data, headers, separator, uFEFF } = this.props;
-      this.setState({ href: this.buildURI(data, uFEFF, headers, separator) });
+      const { data, headers, separator, uFEFF, leadingComments } = this.props;
+      this.setState({
+        href: this.buildURI(data, uFEFF, headers, separator, leadingComments)
+      });
     }
   }
 
@@ -103,6 +121,7 @@ class CSVLink extends React.Component {
       onClick,
       asyncOnClick,
       enclosingCharacter,
+      leadingComments,
       ...rest
     } = this.props;
 

@@ -1,6 +1,5 @@
-import React from 'react';
-import { string, array, oneOfType, bool, func } from 'prop-types';
-
+import React from "react";
+import { string, array, oneOfType, bool, func } from "prop-types";
 
 export const propTypes = {
   data: oneOfType([string, array]).isRequired,
@@ -10,7 +9,8 @@ export const propTypes = {
   filename: string,
   uFEFF: bool,
   onClick: func,
-  asyncOnClick: bool
+  asyncOnClick: bool,
+  leadingComments: string
 };
 
 export const defaultProps = {
