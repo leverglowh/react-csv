@@ -79,18 +79,7 @@ export const jsons2csv = (data, headers, separator, enclosingCharacter) =>
 export const string2csv = (data, headers, separator, enclosingCharacter) =>
   headers ? `${headers.join(separator)}\n${data}` : data;
 
-export const toCSV = (data, headers, separator, enclosingCharacter) => {
-  if (isJsons(data))
-    return jsons2csv(data, headers, separator, enclosingCharacter);
-  if (isArrays(data))
-    return arrays2csv(data, headers, separator, enclosingCharacter);
-  if (typeof data === "string") return string2csv(data, headers, separator);
-  throw new TypeError(
-    `Data should be a "String", "Array of arrays" OR "Array of objects" `
-  );
-};
-
-const parseLeadingComments = leadingComments => {
+const formatComments = leadingComments => {
   let lines = leadingComments.split("\n");
   // Add leading # if not already there
   lines = lines.reduce(
@@ -105,6 +94,27 @@ const parseLeadingComments = leadingComments => {
   return lines.join("\n");
 };
 
+export const toCSV = (data, headers, separator, enclosingCharacter, leadingComments) => {
+  let csvString;
+  if (isJsons(data)) {
+    csvString =  jsons2csv(data, headers, separator, enclosingCharacter);
+  } else if (isArrays(data)) {
+    csvString =  arrays2csv(data, headers, separator, enclosingCharacter);
+  } else if (typeof data === "string") {
+    csvString = string2csv(data, headers, separator);
+  } else {
+    throw new TypeError(
+      `Data should be a "String", "Array of arrays" OR "Array of objects" `
+    );
+  }
+
+  if (leadingComments) {
+    return formatComments(leadingComments) + "\n" + csvString;
+  } else {
+    return csvString;
+  }
+};
+
 export const buildURI = (
   data,
   uFEFF,
@@ -113,8 +123,7 @@ export const buildURI = (
   enclosingCharacter,
   leadingComments
 ) => {
-  let csv = toCSV(data, headers, separator, enclosingCharacter);
-  if (leadingComments) csv = parseLeadingComments(leadingComments) + "\n" + csv;
+  var csv = toCSV(data, headers, separator, enclosingCharacter, leadingComments);
 
   const type = isSafari() ? "application/csv" : "text/csv";
   const blob = new Blob([uFEFF ? "\uFEFF" : "", csv], { type });
