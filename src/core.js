@@ -90,7 +90,7 @@ export const toCSV = (data, headers, separator, enclosingCharacter) => {
   );
 };
 
-export const addLeadingComments = (csv, leadingComments) => {
+const parseLeadingComments = leadingComments => {
   let lines = leadingComments.split("\n");
   // Add leading # if not already there
   lines = lines.reduce(
@@ -102,7 +102,7 @@ export const addLeadingComments = (csv, leadingComments) => {
     },
     []
   );
-  return `${lines.join("\n")}${"\n"}${csv}`;
+  return lines.join("\n");
 };
 
 export const buildURI = (
@@ -114,7 +114,7 @@ export const buildURI = (
   leadingComments
 ) => {
   let csv = toCSV(data, headers, separator, enclosingCharacter);
-  if (leadingComments) csv = addLeadingComments(csv, leadingComments);
+  if (leadingComments) csv = parseLeadingComments(leadingComments) + "\n" + csv;
 
   const type = isSafari() ? "application/csv" : "text/csv";
   const blob = new Blob([uFEFF ? "\uFEFF" : "", csv], { type });
