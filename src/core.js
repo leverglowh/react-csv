@@ -77,7 +77,7 @@ export const jsons2csv = (data, headers, separator, enclosingCharacter) =>
   joiner(jsons2arrays(data, headers), separator, enclosingCharacter);
 
 export const string2csv = (data, headers, separator, enclosingCharacter) =>
-  headers ? `${headers.join(separator)}\n${data}` : data;
+  (headers) ? `${headers.join(separator)}\n${data}` : data.replace(/"/g, '""')
 
 const formatComments = leadingComments => {
   let lines = leadingComments.split("\n");

@@ -298,6 +298,10 @@ describe('In browser environment', () => {
         expect(() => toCSV(fixtures.string)).toNotThrow();
     });
 
+    it('escapes double quotes', () => {
+      const result = string2csv('lorem "ipsum" dolor sit amet')
+      expect(result).toEqual('lorem ""ipsum"" dolor sit amet');
+    })
   })
 
   describe(`core::buildURI`, () =>{
