@@ -102,7 +102,7 @@ export const addLeadingComments = (csv, leadingComments) => {
     },
     []
   );
-  return [lines.join(`\n`), csv].join(`\n`);
+  return `${lines.join("\n")}${"\n"}${csv}`;
 };
 
 export const buildURI = (
