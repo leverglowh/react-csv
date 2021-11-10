@@ -96,12 +96,13 @@ export const addLeadingComments = (csv, leadingComments) => {
   lines = lines.reduce(
     (memo, line) => {
       if (line) {
-        return line.trim() ? memo.concat(line[0] === "#" ? line : "# " + line) : memo
+        const l = line.trim();
+        return l ? memo.concat(l[0] === "#" ? l : "# " + l) : memo
       } else return memo;
     },
     []
   );
-  return lines.join(`\n`) + `\n` + csv;
+  return [lines.join(`\n`), csv].join(`\n`);
 };
 
 export const buildURI = (
