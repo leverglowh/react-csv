@@ -94,8 +94,11 @@ export const addLeadingComments = (csv, leadingComments) => {
   let lines = leadingComments.split("\n");
   // Add leading # if not already there
   lines = lines.reduce(
-    (memo, line) =>
-      line?.trim() ? memo.concat(line[0] === "#" ? line : "# " + line) : memo,
+    (memo, line) => {
+      if (line) {
+        return line.trim() ? memo.concat(line[0] === "#" ? line : "# " + line) : memo
+      } else return memo;
+    },
     []
   );
   return lines.join(`\n`) + `\n` + csv;
